@@ -6,8 +6,16 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6386E7E93657B022452F1601 /* Pods_Markdown_Display.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F691A1CF02817C62CCB8F62 /* Pods_Markdown_Display.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		1903594230F30209D2B3D45B /* Pods-Markdown-Display.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Markdown-Display.release.xcconfig"; path = "Target Support Files/Pods-Markdown-Display/Pods-Markdown-Display.release.xcconfig"; sourceTree = "<group>"; };
+		2F691A1CF02817C62CCB8F62 /* Pods_Markdown_Display.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Markdown_Display.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		79D2DDFE2D62DF4B00E4F5D6 /* Markdown-Display.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Markdown-Display.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79D2DE5A2D6304DB00E4F5D6 /* Down.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Down.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8797EC30BC7ECF38A7EE0603 /* Pods-Markdown-Display.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Markdown-Display.debug.xcconfig"; path = "Target Support Files/Pods-Markdown-Display/Pods-Markdown-Display.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,17 +44,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6386E7E93657B022452F1601 /* Pods_Markdown_Display.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E0FA4B3EA4812579942CB20 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				79D2DE5A2D6304DB00E4F5D6 /* Down.framework */,
+				2F691A1CF02817C62CCB8F62 /* Pods_Markdown_Display.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		79D2DDF52D62DF4B00E4F5D6 = {
 			isa = PBXGroup;
 			children = (
 				79D2DE002D62DF4B00E4F5D6 /* Markdown-Display */,
 				79D2DDFF2D62DF4B00E4F5D6 /* Products */,
+				92732C46933EE01C1FF34337 /* Pods */,
+				3E0FA4B3EA4812579942CB20 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +78,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		92732C46933EE01C1FF34337 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8797EC30BC7ECF38A7EE0603 /* Pods-Markdown-Display.debug.xcconfig */,
+				1903594230F30209D2B3D45B /* Pods-Markdown-Display.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -65,9 +94,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 79D2DE162D62DF4E00E4F5D6 /* Build configuration list for PBXNativeTarget "Markdown-Display" */;
 			buildPhases = (
+				DBC097A347F46D64559795B3 /* [CP] Check Pods Manifest.lock */,
 				79D2DDFA2D62DF4B00E4F5D6 /* Sources */,
 				79D2DDFB2D62DF4B00E4F5D6 /* Frameworks */,
 				79D2DDFC2D62DF4B00E4F5D6 /* Resources */,
+				7DCA9CE7A611588ED7056125 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -77,8 +108,6 @@
 				79D2DE002D62DF4B00E4F5D6 /* Markdown-Display */,
 			);
 			name = "Markdown-Display";
-			packageProductDependencies = (
-			);
 			productName = "Markdown-Display";
 			productReference = 79D2DDFE2D62DF4B00E4F5D6 /* Markdown-Display.app */;
 			productType = "com.apple.product-type.application";
@@ -126,6 +155,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7DCA9CE7A611588ED7056125 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Markdown-Display/Pods-Markdown-Display-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Markdown-Display/Pods-Markdown-Display-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Markdown-Display/Pods-Markdown-Display-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DBC097A347F46D64559795B3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Markdown-Display-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		79D2DDFA2D62DF4B00E4F5D6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -139,6 +210,7 @@
 /* Begin XCBuildConfiguration section */
 		79D2DE172D62DF4E00E4F5D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8797EC30BC7ECF38A7EE0603 /* Pods-Markdown-Display.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -147,11 +219,13 @@
 				DEVELOPMENT_TEAM = BB229853Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Markdown-Display/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -166,6 +240,7 @@
 		};
 		79D2DE182D62DF4E00E4F5D6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1903594230F30209D2B3D45B /* Pods-Markdown-Display.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -174,11 +249,13 @@
 				DEVELOPMENT_TEAM = BB229853Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Markdown-Display/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -228,7 +305,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -289,7 +366,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
