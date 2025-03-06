@@ -8,5 +8,6 @@ target 'Markdown-Display' do
   # Pods for Markdown-Display
   pod 'MMMarkdown'   # Markdown → HTML
   pod 'DTCoreText'   # HTML → NSAttributedString
-
+  pod 'Down'
+  
 end
