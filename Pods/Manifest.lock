@@ -1,4 +1,5 @@
 PODS:
+  - Down (0.11.0)
   - DTCoreText (1.6.28):
     - DTCoreText/Core (= 1.6.28)
     - DTFoundation/Core (~> 1.7.19)
@@ -19,20 +20,23 @@ PODS:
   - MMMarkdown (0.5.5)
 
 DEPENDENCIES:
+  - Down
   - DTCoreText
   - MMMarkdown
 
 SPEC REPOS:
   trunk:
+    - Down
     - DTCoreText
     - DTFoundation
     - MMMarkdown
 
 SPEC CHECKSUMS:
+  Down: b6ba1bc985c9d2f4e15e3b293d2207766fa12612
   DTCoreText: 11b7fe2104f476f82e75a4e3dbdde74d7186cecb
   DTFoundation: 76b624967cf5bcaae6bb057d622c536c36ef36d0
   MMMarkdown: 1af97166ce0f6d6e0cb05695665492195d27c3f1
 
-PODFILE CHECKSUM: 1fc231bb79f0da36ff159f32473734829a7a74c8
+PODFILE CHECKSUM: 926ae2402fa8ad3812e7e0cdd9abd97055e4f83d
 
 COCOAPODS: 1.16.2
