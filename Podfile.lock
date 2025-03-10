@@ -17,11 +17,13 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.19):
     - DTFoundation/Core
+  - MarkdownView (1.9.1)
   - MMMarkdown (0.5.5)
 
 DEPENDENCIES:
   - Down
   - DTCoreText
+  - MarkdownView
   - MMMarkdown
 
 SPEC REPOS:
@@ -29,14 +31,16 @@ SPEC REPOS:
     - Down
     - DTCoreText
     - DTFoundation
+    - MarkdownView
     - MMMarkdown
 
 SPEC CHECKSUMS:
   Down: b6ba1bc985c9d2f4e15e3b293d2207766fa12612
   DTCoreText: 11b7fe2104f476f82e75a4e3dbdde74d7186cecb
   DTFoundation: 76b624967cf5bcaae6bb057d622c536c36ef36d0
+  MarkdownView: 22249778219cc22901f1454e8355298dd0bda7f0
   MMMarkdown: 1af97166ce0f6d6e0cb05695665492195d27c3f1
 
-PODFILE CHECKSUM: 926ae2402fa8ad3812e7e0cdd9abd97055e4f83d
+PODFILE CHECKSUM: 7c8ad15234cf90e4f1ec8584863bfffbbdfe231d
 
 COCOAPODS: 1.16.2

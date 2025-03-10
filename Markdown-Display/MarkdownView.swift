@@ -6,6 +6,27 @@
 //
 
 import Foundation
+import MarkdownView
+import UIKit
+
+@objcMembers
+public class MDViewWrapper: NSObject {
+    private var markdownView: MarkdownView
+    
+    @MainActor public init(frame: CGRect) {
+        markdownView = MarkdownView()
+        markdownView.frame = frame
+        super.init()
+    }
+    
+    public var view: UIView {
+        return markdownView
+    }
+    
+    @MainActor public func load(markdown: String) {
+        markdownView.load(markdown: markdown)
+    }
+}
 
 @objcMembers
 public class SwiftLibrary: NSObject {
