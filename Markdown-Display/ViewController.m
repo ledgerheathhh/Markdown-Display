@@ -10,6 +10,7 @@
 #import <MMMarkdown/MMMarkdown.h>
 #import <DTCoreText/DTCoreText.h>
 #import "NSAttributedStringMarkdownParser.h"
+#import "Markdown_Display-Swift.h"
 
 @interface ViewController ()
 
@@ -22,6 +23,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    SwiftLibrary *library = [[SwiftLibrary alloc] init];
+    NSString *result = [library method];
+    NSLog(@"Swift: %@", result);
+    
     // 读取文件并将其内容转换为字符串
     NSString *filePath = @"./file.md";  // 文件的路径
     NSError *error = nil;
