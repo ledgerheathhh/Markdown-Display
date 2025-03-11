@@ -35,7 +35,7 @@ public class MDViewWrapper: NSObject {
         return markdownView
     }
     
-    @MainActor public func load(markdown: String) {
+    @MainActor @objc(loadWithMarkdown:) public func load(markdown: String) {
         print("MDViewWrapper - 开始加载Markdown内容")
         markdownView.load(markdown: markdown)
         print("MDViewWrapper - Markdown内容加载方法调用完成")
