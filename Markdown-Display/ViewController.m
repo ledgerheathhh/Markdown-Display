@@ -52,13 +52,27 @@
 
 - (void)renderMarkdown_swiftView:(NSString *)markdown {
     // 创建 MarkdownView 包装器
+    NSLog(@"开始创建MDViewWrapper");
     MDViewWrapper *mdWrapper = [[MDViewWrapper alloc] initWithFrame:self.view.bounds];
     
+    // 设置高度回调 - 确保回调被正确设置
+    NSLog(@"设置高度回调");
+    [mdWrapper setOnHeightReceived:^(CGFloat height) {
+        NSLog(@"MarkdownView 渲染完成，高度为: %f", height);
+    }];
+    
     // 将 MarkdownView 添加到视图层次结构中
+    NSLog(@"添加到视图层次结构");
     [self.view addSubview:[mdWrapper view]];
     
-    // 加载 Markdown 内容
-    [mdWrapper loadWithMarkdown:markdown];
+    // 确保所有设置完成后再加载 Markdown 内容
+    NSLog(@"准备加载Markdown内容: %@", markdown);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"开始加载Markdown内容");
+        [mdWrapper loadWithMarkdown:markdown];
+        NSLog(@"Markdown内容加载完成");
+    });
+
 }
 
 - (void)renderMarkdown_CustomView:(NSString *)markdownText {
