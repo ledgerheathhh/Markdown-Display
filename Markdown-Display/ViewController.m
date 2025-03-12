@@ -56,16 +56,26 @@
 - (void)renderMarkdown_swiftView:(NSString *)markdown {
     // 创建 MarkdownView 包装器
     NSLog(@"开始创建MDViewWrapper");
-    MDViewWrapper *mdWrapper = [[MDViewWrapper alloc] initWithFrame:self.view.bounds];
     
-    // 设置高度回调 - 确保回调被正确设置
+    // 使用视图的宽度，但高度设为0，让它根据内容自动调整
+    CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
+    MDViewWrapper *mdWrapper = [[MDViewWrapper alloc] initWithFrame:frame];
+    
+    // 设置高度回调
     NSLog(@"设置高度回调");
+    __weak typeof(self) weakSelf = self;
     [mdWrapper setOnHeightReceived:^(CGFloat height) {
         NSLog(@"MarkdownView 渲染完成，高度为: %f", height);
-        NSLog(@"MarkdownView 渲染完成，高度为: %f", height);
-        NSLog(@"MarkdownView 渲染完成，高度为: %f", height);
-        NSLog(@"MarkdownView 渲染完成，高度为: %f", height);
-        NSLog(@"MarkdownView 渲染完成，高度为: %f", height);
+        
+        // 更新MarkdownView的高度
+        dispatch_async(dispatch_get_main_queue(), ^{
+            CGRect newFrame = mdWrapper.view.frame;
+            newFrame.size.height = height;
+            mdWrapper.view.frame = newFrame;
+            
+            // 如果需要，可以在这里更新其他UI元素
+            [weakSelf.view setNeedsLayout];
+        });
     }];
     
     // 将 MarkdownView 添加到视图层次结构中
