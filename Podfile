@@ -10,5 +10,7 @@ target 'Markdown-Display' do
   pod 'DTCoreText'   # HTML → NSAttributedString
   pod 'Down'
   pod "MarkdownView"
+  pod 'TSMarkdownParser'
+  pod 'LookinServer', :configurations => ['Debug']
   
 end

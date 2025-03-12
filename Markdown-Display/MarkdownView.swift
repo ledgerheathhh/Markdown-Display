@@ -42,7 +42,7 @@ public class MDViewWrapper: NSObject {
     }
     
     // 添加设置高度回调的方法
-    public func setOnHeightReceived(_ callback: @escaping (CGFloat) -> Void) {
+    @objc public func setOnHeightReceived(_ callback: @escaping @convention(block) (CGFloat) -> Void) {
         print("MDViewWrapper - 设置高度回调")
         self.heightCallback = callback
         print("MDViewWrapper - 高度回调设置完成")
