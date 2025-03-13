@@ -18,6 +18,7 @@ public class MDViewWrapper: NSObject {
         print("MDViewWrapper - 初始化开始")
         markdownView = MarkdownView()
         markdownView.frame = frame
+        markdownView.isScrollEnabled = false
         super.init()
         
         // 设置渲染完成的回调
@@ -25,6 +26,12 @@ public class MDViewWrapper: NSObject {
         markdownView.onRendered = { [weak self] height in
             print("MDViewWrapper - onRendered回调被触发，高度: \(height)")
             DispatchQueue.main.async {
+                // 自动调整视图高度
+                var newFrame = self?.markdownView.frame ?? .zero
+                newFrame.size.height = height
+                self?.markdownView.frame = newFrame
+                
+                // 调用外部设置的高度回调
                 self?.heightCallback?(height)
             }
         }

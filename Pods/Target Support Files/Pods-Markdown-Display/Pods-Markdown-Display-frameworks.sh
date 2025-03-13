@@ -179,6 +179,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Down/Down.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/LookinServer/LookinServer.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MMMarkdown/MMMarkdown.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MarkdownView/MarkdownView.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TSMarkdownParser/TSMarkdownParser.framework"

@@ -54,6 +54,11 @@
 }
 
 - (void)renderMarkdown_swiftView:(NSString *)markdown {
+    
+    UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 500, 500)];
+    scrollView.backgroundColor = UIColor.grayColor;
+    [self.view addSubview:scrollView];
+    
     // 创建 MarkdownView 包装器
     NSLog(@"开始创建MDViewWrapper");
     
@@ -63,24 +68,23 @@
     
     // 设置高度回调
     NSLog(@"设置高度回调");
-    __weak typeof(self) weakSelf = self;
+//    __weak typeof(self) weakSelf = self;
     [mdWrapper setOnHeightReceived:^(CGFloat height) {
-        NSLog(@"MarkdownView 渲染完成，高度为: %f", height);
-        
         // 更新MarkdownView的高度
         dispatch_async(dispatch_get_main_queue(), ^{
-            CGRect newFrame = mdWrapper.view.frame;
-            newFrame.size.height = height;
-            mdWrapper.view.frame = newFrame;
-            
-            // 如果需要，可以在这里更新其他UI元素
-            [weakSelf.view setNeedsLayout];
+            NSLog(@"MarkdownView 渲染完成，高度为: %f", height);
+//            CGRect newFrame = mdWrapper.view.frame;
+//            newFrame.size.height = height;
+//            mdWrapper.view.frame = newFrame;
+//            
+//            // 如果需要，可以在这里更新其他UI元素
+//            [weakSelf.view setNeedsLayout];
         });
     }];
     
     // 将 MarkdownView 添加到视图层次结构中
     NSLog(@"添加到视图层次结构");
-    [self.view addSubview:[mdWrapper view]];
+    [scrollView addSubview:[mdWrapper view]];
     
     // 确保所有设置完成后再加载 Markdown 内容
     NSLog(@"准备加载Markdown内容: %@", markdown);

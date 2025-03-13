@@ -17,6 +17,9 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.19):
     - DTFoundation/Core
+  - LookinServer (1.2.8):
+    - LookinServer/Core (= 1.2.8)
+  - LookinServer/Core (1.2.8)
   - MarkdownView (1.9.1)
   - MMMarkdown (0.5.5)
   - TSMarkdownParser (2.1.5)
@@ -24,6 +27,7 @@ PODS:
 DEPENDENCIES:
   - Down
   - DTCoreText
+  - LookinServer
   - MarkdownView
   - MMMarkdown
   - TSMarkdownParser
@@ -33,6 +37,7 @@ SPEC REPOS:
     - Down
     - DTCoreText
     - DTFoundation
+    - LookinServer
     - MarkdownView
     - MMMarkdown
     - TSMarkdownParser
@@ -41,10 +46,11 @@ SPEC CHECKSUMS:
   Down: b6ba1bc985c9d2f4e15e3b293d2207766fa12612
   DTCoreText: 11b7fe2104f476f82e75a4e3dbdde74d7186cecb
   DTFoundation: 76b624967cf5bcaae6bb057d622c536c36ef36d0
+  LookinServer: 1b2b61c6402ae29fa22182d48f5cd067b4e99e80
   MarkdownView: 22249778219cc22901f1454e8355298dd0bda7f0
   MMMarkdown: 1af97166ce0f6d6e0cb05695665492195d27c3f1
   TSMarkdownParser: 3224ea196ecc7148fa7e03bc438f9390d4edfb6d
 
-PODFILE CHECKSUM: f5252ae3745a9625c4d8a35ae8e7a14819be0faf
+PODFILE CHECKSUM: 026c04417b921905c7ab5e311456e32c29254551
 
 COCOAPODS: 1.16.2
