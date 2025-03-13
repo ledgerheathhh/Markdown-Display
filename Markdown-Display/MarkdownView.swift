@@ -48,6 +48,10 @@ public class MDViewWrapper: NSObject {
         print("MDViewWrapper - Markdown内容加载方法调用完成")
     }
     
+    @MainActor @objc(showWithMarkdown:) public func show(markdown: String) {
+        markdownView.show(markdown: markdown)
+    }
+    
     // 添加设置高度回调的方法
     @objc public func setOnHeightReceived(_ callback: @escaping @convention(block) (CGFloat) -> Void) {
         print("MDViewWrapper - 设置高度回调")

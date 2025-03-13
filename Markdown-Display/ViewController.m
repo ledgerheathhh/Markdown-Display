@@ -55,7 +55,7 @@
 
 - (void)renderMarkdown_swiftView:(NSString *)markdown {
     
-    UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 500, 500)];
+    UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:self.view.bounds];
     scrollView.backgroundColor = UIColor.grayColor;
     [self.view addSubview:scrollView];
     
@@ -63,7 +63,7 @@
     NSLog(@"开始创建MDViewWrapper");
     
     // 使用视图的宽度，但高度设为0，让它根据内容自动调整
-    CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
+    CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, 100);
     MDViewWrapper *mdWrapper = [[MDViewWrapper alloc] initWithFrame:frame];
     
     // 设置高度回调
