@@ -10,6 +10,7 @@ open class MarkdownView: UIView {
 
   private var webView: WKWebView?
   private var updateHeightHandler: UpdateHeightHandler?
+  private let instanceId: String = UUID().uuidString
   
   private var intrinsicContentHeight: CGFloat? {
     didSet {
@@ -50,7 +51,7 @@ open class MarkdownView: UIView {
   override init (frame: CGRect) {
     super.init(frame : frame)
     
-    let updateHeightHandler = UpdateHeightHandler { [weak self] height in
+    let updateHeightHandler = UpdateHeightHandler(instanceId: instanceId) { [weak self] height in
       guard height > self?.intrinsicContentHeight ?? 0 else { return }
       self?.onRendered?(height)
       self?.intrinsicContentHeight = height
@@ -105,7 +106,6 @@ extension MarkdownView {
 extension MarkdownView: WKNavigationDelegate {
 
   public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-
     switch navigationAction.navigationType {
     case .linkActivated:
       if let onTouchLink = onTouchLink, onTouchLink(navigationAction.request) {
@@ -116,22 +116,35 @@ extension MarkdownView: WKNavigationDelegate {
     default:
       decisionHandler(.allow)
     }
+  }
 
+  public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    webView.evaluateJavaScript("document.documentElement.scrollHeight") { [weak self] (height, error) in
+      if let height = height as? CGFloat {
+        self?.onRendered?(height)
+        self?.intrinsicContentHeight = height
+      }
+    }
   }
 }
 
 // MARK: -
 private class UpdateHeightHandler: NSObject, WKScriptMessageHandler {
   var onUpdate: ((CGFloat) -> Void)
+  private let instanceId: String
   
-  init(onUpdate: @escaping (CGFloat) -> Void) {
+  init(instanceId: String, onUpdate: @escaping (CGFloat) -> Void) {
+    self.instanceId = instanceId
     self.onUpdate = onUpdate
   }
   
   public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
     switch message.name {
     default:
-      if let height = message.body as? CGFloat {
+      if let body = message.body as? [String: Any],
+         let height = body["height"] as? CGFloat,
+         let msgInstanceId = body["instanceId"] as? String,
+         msgInstanceId == instanceId {
         self.onUpdate(height)
       }
     }
@@ -205,6 +218,7 @@ private extension MarkdownView {
   }
 
   func makeWebView(with configuration: WKWebViewConfiguration) -> WKWebView {
+    print("[MarkdownView] 配置 WebView 布局")
     let wv = WKWebView(frame: self.bounds, configuration: configuration)
     wv.scrollView.isScrollEnabled = self.isScrollEnabled
     wv.translatesAutoresizingMaskIntoConstraints = false
@@ -226,6 +240,14 @@ private extension MarkdownView {
                              markdown: String?,
                              enableImage: Bool?) -> WKUserContentController {
     let controller = WKUserContentController()
+    
+    // Add script to send height with instanceId
+    let heightScript = WKUserScript(source: """
+      window.updateHeight = function(height) {
+        window.webkit.messageHandlers.updateHeight.postMessage({height: height, instanceId: '(instanceId)'});
+      }
+    """, injectionTime: .atDocumentStart, forMainFrameOnly: true)
+    controller.addUserScript(heightScript)
     
     if let css = css {
       let styleInjection = WKUserScript(source: styleScript(css), injectionTime: .atDocumentEnd, forMainFrameOnly: true)

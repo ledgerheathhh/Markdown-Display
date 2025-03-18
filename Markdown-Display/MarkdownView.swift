@@ -14,25 +14,48 @@ public class MDViewWrapper: NSObject {
     private var markdownView: MarkdownView
     private var heightCallback: ((CGFloat) -> Void)?
     
+    private var heightConstraint: NSLayoutConstraint?
+    
     @MainActor public init(frame: CGRect) {
         print("MDViewWrapper - 初始化开始")
         markdownView = MarkdownView()
-        markdownView.frame = frame
         markdownView.isScrollEnabled = false
         super.init()
+        testClass.testClassMethod()
+        // 设置自动布局
+        markdownView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // 创建一个容器视图
+        let containerView = UIView(frame: frame)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // 将MarkdownView添加到容器视图
+        containerView.addSubview(markdownView)
+        
+        // 设置MarkdownView的约束
+        heightConstraint = markdownView.heightAnchor.constraint(equalToConstant: 0)
+        NSLayoutConstraint.activate([
+            markdownView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            markdownView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            markdownView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            heightConstraint!,
+            containerView.bottomAnchor.constraint(equalTo: markdownView.bottomAnchor)
+        ])
         
         // 设置渲染完成的回调
         print("MDViewWrapper - 设置onRendered回调")
         markdownView.onRendered = { [weak self] height in
             print("MDViewWrapper - onRendered回调被触发，高度: \(height)")
             DispatchQueue.main.async {
-                // 自动调整视图高度
-                var newFrame = self?.markdownView.frame ?? .zero
-                newFrame.size.height = height
-                self?.markdownView.frame = newFrame
+                // 更新高度约束
+                self?.heightConstraint?.constant = height
+                self?.heightConstraint?.isActive = true
                 
                 // 调用外部设置的高度回调
                 self?.heightCallback?(height)
+                
+                // 强制更新布局
+                containerView.layoutIfNeeded()
             }
         }
         print("MDViewWrapper - 初始化完成")
