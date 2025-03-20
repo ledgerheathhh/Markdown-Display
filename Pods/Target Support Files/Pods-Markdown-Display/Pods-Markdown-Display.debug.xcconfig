@@ -1,13 +1,10 @@
-ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
 CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DTCoreText" "${PODS_CONFIGURATION_BUILD_DIR}/DTFoundation" "${PODS_CONFIGURATION_BUILD_DIR}/Down" "${PODS_CONFIGURATION_BUILD_DIR}/LookinServer" "${PODS_CONFIGURATION_BUILD_DIR}/MMMarkdown" "${PODS_CONFIGURATION_BUILD_DIR}/MarkdownView" "${PODS_CONFIGURATION_BUILD_DIR}/TSMarkdownParser"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/LookinServer"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DTCoreText/DTCoreText.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/DTFoundation/DTFoundation.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Down/Down.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/LookinServer/LookinServer.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/MMMarkdown/MMMarkdown.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/MarkdownView/MarkdownView.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/TSMarkdownParser/TSMarkdownParser.framework/Headers" "$(SDKROOT)/usr/include/libxml2"
-LD_RUNPATH_SEARCH_PATHS = $(inherited) /usr/lib/swift '@executable_path/Frameworks' '@loader_path/Frameworks'
-LIBRARY_SEARCH_PATHS = $(inherited) "${TOOLCHAIN_DIR}/usr/lib/swift/${PLATFORM_NAME}" /usr/lib/swift
-OTHER_LDFLAGS = $(inherited) -l"xml2" -framework "CoreGraphics" -framework "CoreText" -framework "DTCoreText" -framework "DTFoundation" -framework "Down" -framework "Foundation" -framework "ImageIO" -framework "LookinServer" -framework "MMMarkdown" -framework "MarkdownView" -framework "MediaPlayer" -framework "QuartzCore" -framework "TSMarkdownParser" -framework "UIKit"
-OTHER_MODULE_VERIFIER_FLAGS = $(inherited) "-F${PODS_CONFIGURATION_BUILD_DIR}/DTCoreText" "-F${PODS_CONFIGURATION_BUILD_DIR}/DTFoundation" "-F${PODS_CONFIGURATION_BUILD_DIR}/Down" "-F${PODS_CONFIGURATION_BUILD_DIR}/LookinServer" "-F${PODS_CONFIGURATION_BUILD_DIR}/MMMarkdown" "-F${PODS_CONFIGURATION_BUILD_DIR}/MarkdownView" "-F${PODS_CONFIGURATION_BUILD_DIR}/TSMarkdownParser"
-OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/LookinServer/LookinServer.framework/Headers"
+LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
+OTHER_LDFLAGS = $(inherited) -framework "LookinServer" -framework "UIKit"
+OTHER_MODULE_VERIFIER_FLAGS = $(inherited) "-F${PODS_CONFIGURATION_BUILD_DIR}/LookinServer"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.

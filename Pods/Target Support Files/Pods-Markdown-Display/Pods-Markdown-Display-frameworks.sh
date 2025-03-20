@@ -176,21 +176,7 @@ code_sign_if_enabled() {
 }
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Down/Down.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/LookinServer/LookinServer.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/MMMarkdown/MMMarkdown.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/MarkdownView/MarkdownView.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/TSMarkdownParser/TSMarkdownParser.framework"
-fi
-if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Down/Down.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/MMMarkdown/MMMarkdown.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/MarkdownView/MarkdownView.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/TSMarkdownParser/TSMarkdownParser.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

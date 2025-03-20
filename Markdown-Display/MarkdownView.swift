@@ -5,94 +5,258 @@
 //  Created by Ledger Heath on 2025/3/10.
 //
 
-import Foundation
-import MarkdownView
 import UIKit
+import WebKit
 
-@objcMembers
-public class MDViewWrapper: NSObject {
-    private var markdownView: MarkdownView
-    private var heightCallback: ((CGFloat) -> Void)?
-    
-    private var heightConstraint: NSLayoutConstraint?
-    
-    @MainActor public init(frame: CGRect) {
-        print("MDViewWrapper - 初始化开始")
-        markdownView = MarkdownView()
-        markdownView.isScrollEnabled = false
-        super.init()
-        testClass.testClassMethod()
-        // 设置自动布局
-        markdownView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // 创建一个容器视图
-        let containerView = UIView(frame: frame)
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // 将MarkdownView添加到容器视图
-        containerView.addSubview(markdownView)
-        
-        // 设置MarkdownView的约束
-        heightConstraint = markdownView.heightAnchor.constraint(equalToConstant: 0)
-        NSLayoutConstraint.activate([
-            markdownView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            markdownView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            markdownView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            heightConstraint!,
-            containerView.bottomAnchor.constraint(equalTo: markdownView.bottomAnchor)
-        ])
-        
-        // 设置渲染完成的回调
-        print("MDViewWrapper - 设置onRendered回调")
-        markdownView.onRendered = { [weak self] height in
-            print("MDViewWrapper - onRendered回调被触发，高度: \(height)")
-            DispatchQueue.main.async {
-                // 更新高度约束
-                self?.heightConstraint?.constant = height
-                self?.heightConstraint?.isActive = true
-                
-                // 调用外部设置的高度回调
-                self?.heightCallback?(height)
-                
-                // 强制更新布局
-                containerView.layoutIfNeeded()
-            }
-        }
-        print("MDViewWrapper - 初始化完成")
+/**
+ Markdown View for iOS.
+ 
+ - Note: [How to get height of entire document with javascript](https://stackoverflow.com/questions/1145850/how-to-get-height-of-entire-document-with-javascript)
+ */
+open class MarkdownView: UIView {
+
+  private var webView: WKWebView?
+  private var updateHeightHandler: UpdateHeightHandler?
+  
+  private var intrinsicContentHeight: CGFloat? {
+    didSet {
+      self.invalidateIntrinsicContentSize()
     }
-    
-    public var view: UIView {
-        return markdownView
+  }
+
+  @objc public var isScrollEnabled: Bool = true {
+    didSet {
+      webView?.scrollView.isScrollEnabled = isScrollEnabled
     }
+  }
+
+  @objc public var onTouchLink: ((URLRequest) -> Bool)?
+
+  @objc public var onRendered: ((CGFloat) -> Void)?
+
+  public convenience init() {
+    self.init(frame: .zero)
+  }
+
+  /// Reserve a web view before displaying markdown.
+  /// You can use this for performance optimization.
+  ///
+  /// - Note: `webView` needs complete loading before invoking `show` method.
+  public convenience init(css: String?, plugins: [String]?, stylesheets: [URL]? = nil, styled: Bool = true) {
+    self.init(frame: .zero)
     
-    @MainActor @objc(loadWithMarkdown:) public func load(markdown: String) {
-        print("MDViewWrapper - 开始加载Markdown内容")
-        markdownView.load(markdown: markdown)
-        print("MDViewWrapper - Markdown内容加载方法调用完成")
+    let configuration = WKWebViewConfiguration()
+    configuration.userContentController = makeContentController(css: css, plugins: plugins, stylesheets: stylesheets, markdown: nil, enableImage: nil)
+    if let handler = updateHeightHandler {
+      configuration.userContentController.add(handler, name: "updateHeight")
     }
+    self.webView = makeWebView(with: configuration)
+    self.webView?.load(URLRequest(url: styled ? Self.styledHtmlUrl : Self.nonStyledHtmlUrl))
+  }
+
+  override init (frame: CGRect) {
+    super.init(frame : frame)
     
-    @MainActor @objc(showWithMarkdown:) public func show(markdown: String) {
-        markdownView.show(markdown: markdown)
+    let updateHeightHandler = UpdateHeightHandler { [weak self] height in
+      guard height > self?.intrinsicContentHeight ?? 0 else { return }
+      self?.onRendered?(height)
+      self?.intrinsicContentHeight = height
     }
-    
-    // 添加设置高度回调的方法
-    @objc public func setOnHeightReceived(_ callback: @escaping @convention(block) (CGFloat) -> Void) {
-        print("MDViewWrapper - 设置高度回调")
-        self.heightCallback = callback
-        print("MDViewWrapper - 高度回调设置完成")
-    }
+    self.updateHeightHandler = updateHeightHandler
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+  }
 }
 
-@objcMembers
-public class SwiftLibrary: NSObject {
-    public var property: String = "Hello"
-  
-    public func method() -> String {
-        return "Swift Method Called"
+extension MarkdownView {
+  open override var intrinsicContentSize: CGSize {
+    if let height = self.intrinsicContentHeight {
+      return CGSize(width: UIView.noIntrinsicMetric, height: height)
+    } else {
+      return CGSize.zero
     }
-  
-    @objc(customMethodWithParam:)
-    public func method(with param: String) -> String {
-        return "Received: \(param)"
+  }
+
+  /// Load markdown with a newly configured webView.
+  ///
+  /// If you want to preserve already applied css or plugins, use `show` instead.
+  @objc public func load(markdown: String?, enableImage: Bool = true, css: String? = nil, plugins: [String]? = nil, stylesheets: [URL]? = nil, styled: Bool = true) {
+    guard let markdown = markdown else { return }
+
+    self.webView?.removeFromSuperview()
+    let configuration = WKWebViewConfiguration()
+    configuration.userContentController = makeContentController(css: css, plugins: plugins, stylesheets: stylesheets, markdown: markdown, enableImage: enableImage)
+    if let handler = updateHeightHandler {
+      configuration.userContentController.add(handler, name: "updateHeight")
     }
+    self.webView = makeWebView(with: configuration)
+    self.webView?.load(URLRequest(url: styled ? Self.styledHtmlUrl : Self.nonStyledHtmlUrl))
+  }
+  
+  public func show(markdown: String) {
+    guard let webView = webView else { return }
+
+    let escapedMarkdown = self.escape(markdown: markdown) ?? ""
+    let script = "window.showMarkdown('\(escapedMarkdown)', true);"
+    webView.evaluateJavaScript(script) { _, error in
+      guard let error = error else { return }
+      print("[MarkdownView][Error] \(error)")
+    }
+  }
+}
+
+// MARK: - WKNavigationDelegate
+
+extension MarkdownView: WKNavigationDelegate {
+
+  public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+
+    switch navigationAction.navigationType {
+    case .linkActivated:
+      if let onTouchLink = onTouchLink, onTouchLink(navigationAction.request) {
+        decisionHandler(.allow)
+      } else {
+        decisionHandler(.cancel)
+      }
+    default:
+      decisionHandler(.allow)
+    }
+
+  }
+}
+
+// MARK: -
+private class UpdateHeightHandler: NSObject, WKScriptMessageHandler {
+  var onUpdate: ((CGFloat) -> Void)
+  
+  init(onUpdate: @escaping (CGFloat) -> Void) {
+    self.onUpdate = onUpdate
+  }
+  
+  public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    switch message.name {
+    default:
+      if let height = message.body as? CGFloat {
+        self.onUpdate(height)
+      }
+    }
+  }
+}
+
+// MARK: - Scripts
+
+private extension MarkdownView {
+  
+  func styleScript(_ css: String) -> String {
+    [
+      "var s = document.createElement('style');",
+      "s.innerHTML = `\(css)`;",
+      "document.head.appendChild(s);"
+    ].joined()
+  }
+  
+  func linkScript(_ url: URL) -> String {
+    [
+      "var link = document.createElement('link');",
+      "link.href = '\(url.absoluteURL)';",
+      "link.rel = 'stylesheet';",
+      "document.head.appendChild(link);"
+    ].joined()
+  }
+  
+  func usePluginScript(_ pluginBody: String) -> String {
+    """
+      var _module = {};
+      var _exports = {};
+      (function(module, exports) {
+        \(pluginBody)
+      })(_module, _exports);
+      window.usePlugin(_module.exports || _exports);
+    """
+  }
+}
+
+// MARK: - Misc
+
+private extension MarkdownView {
+  static var styledHtmlUrl: URL = {
+    #if SWIFT_PACKAGE
+    let bundle = Bundle.module
+    #else
+    let bundle = Bundle(for: MarkdownView.self)
+    #endif
+    return bundle.url(forResource: "styled",
+                      withExtension: "html") ??
+            bundle.url(forResource: "styled",
+                      withExtension: "html",
+                      subdirectory: "MarkdownView.bundle")!
+  }()
+  
+  static var nonStyledHtmlUrl: URL = {
+    #if SWIFT_PACKAGE
+    let bundle = Bundle.module
+    #else
+    let bundle = Bundle(for: MarkdownView.self)
+    #endif
+    return bundle.url(forResource: "non_styled",
+                      withExtension: "html") ??
+            bundle.url(forResource: "non_styled",
+                      withExtension: "html",
+                      subdirectory: "MarkdownView.bundle")!
+  }()
+
+  func escape(markdown: String) -> String? {
+    return markdown.addingPercentEncoding(withAllowedCharacters: CharacterSet.alphanumerics)
+  }
+
+  func makeWebView(with configuration: WKWebViewConfiguration) -> WKWebView {
+    let wv = WKWebView(frame: self.bounds, configuration: configuration)
+    wv.scrollView.isScrollEnabled = self.isScrollEnabled
+    wv.translatesAutoresizingMaskIntoConstraints = false
+    wv.navigationDelegate = self
+    addSubview(wv)
+    wv.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+    wv.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+    wv.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+    wv.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+    wv.isOpaque = false
+    wv.backgroundColor = .clear
+    wv.scrollView.backgroundColor = .clear
+    return wv
+  }
+  
+  func makeContentController(css: String?,
+                             plugins: [String]?,
+                             stylesheets: [URL]?,
+                             markdown: String?,
+                             enableImage: Bool?) -> WKUserContentController {
+    let controller = WKUserContentController()
+    
+    if let css = css {
+      let styleInjection = WKUserScript(source: styleScript(css), injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+      controller.addUserScript(styleInjection)
+    }
+    
+    plugins?.forEach({ plugin in
+      let scriptInjection = WKUserScript(source: usePluginScript(plugin), injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+      controller.addUserScript(scriptInjection)
+    })
+    
+    stylesheets?.forEach({ url in
+      let linkInjection = WKUserScript(source: linkScript(url), injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+      controller.addUserScript(linkInjection)
+    })
+    
+    if let markdown = markdown {
+      let escapedMarkdown = self.escape(markdown: markdown) ?? ""
+      let imageOption = (enableImage ?? true) ? "true" : "false"
+      let script = "window.showMarkdown('\(escapedMarkdown)', \(imageOption));"
+      let userScript = WKUserScript(source: script, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+      controller.addUserScript(userScript)
+    }
+
+    return controller
+  }
 }

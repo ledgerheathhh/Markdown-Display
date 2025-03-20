@@ -1,7 +1,1 @@
 ${PODS_ROOT}/Target Support Files/Pods-Markdown-Display/Pods-Markdown-Display-frameworks.sh
-${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework
-${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework
-${BUILT_PRODUCTS_DIR}/Down/Down.framework
-${BUILT_PRODUCTS_DIR}/MMMarkdown/MMMarkdown.framework
-${BUILT_PRODUCTS_DIR}/MarkdownView/MarkdownView.framework
-${BUILT_PRODUCTS_DIR}/TSMarkdownParser/TSMarkdownParser.framework

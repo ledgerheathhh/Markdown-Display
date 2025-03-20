@@ -6,11 +6,11 @@ target 'Markdown-Display' do
   use_frameworks!
 
   # Pods for Markdown-Display
-  pod 'MMMarkdown'   # Markdown → HTML
-  pod 'DTCoreText'   # HTML → NSAttributedString
-  pod 'Down'
-  pod "MarkdownView"
-  pod 'TSMarkdownParser'
+#  pod 'MMMarkdown'   # Markdown → HTML
+#  pod 'DTCoreText'   # HTML → NSAttributedString
+#  pod 'Down'
+#  pod "MarkdownView"
+#  pod 'TSMarkdownParser'
   pod 'LookinServer', :configurations => ['Debug']
   
 end
