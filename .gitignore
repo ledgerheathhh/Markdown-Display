@@ -1,2 +1,5 @@
 *.xcuserstate
 UserinterfaceState.xcuserstate
+.DS_Store
+Breakpoints_v2.xcbkptlist
+.gitignore
